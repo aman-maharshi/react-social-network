@@ -1,5 +1,7 @@
 # Social Media App 
-A social networking application using React.js with features like instant messaging, create edit delete posts, user profiles, etc
+A social media application using React.js on the front end with features like instant messaging, CURD posts, user profiles, etc
+
+---
 
 ### Features / Implementations
 - Routing (React Router)

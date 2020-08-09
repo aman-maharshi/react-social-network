@@ -4,7 +4,7 @@ A social media application using React.js on the front end with features like in
 ---
 
 ### Features / Implementations
-- Routing (React Router)
+- Client Side Routing - using React Router
 
 ### Dependencies Used
 - Webpack

@@ -1,16 +1,20 @@
 import React from "react"
 import ReactDOM from "react-dom"
+import Header from "./components/Header"
+import HomeGuest from "./components/HomeGuest"
+import Footer from "./components/Footer"
 
-function ExampleComponent() {
+function Main() {
     return (
-        <div>
-            <h1>Social Network App</h1>
-            <p>Starting our first social networking app using React</p>
-        </div>
+        <>
+            <Header />
+            <HomeGuest />
+            <Footer />
+        </>
     )
 }
 
-ReactDOM.render(<ExampleComponent />, document.querySelector("#app"))
+ReactDOM.render(<Main />, document.querySelector("#app"))
 
 // to load JavaScript asynchronously without refreshing the page
 if (module.hot) {

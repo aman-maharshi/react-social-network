@@ -8,7 +8,7 @@ function HeaderLoggedOut(props) {
     async function handleSubmit(e) {
         e.preventDefault()
         try {
-            const result = await Axios.post("http://localhost:8080/login", { username, password })
+            const result = await Axios.post("/login", { username, password })
             if (result.data) {
                 //console.log(result.data)
                 localStorage.setItem("goSocialToken", result.data.token)

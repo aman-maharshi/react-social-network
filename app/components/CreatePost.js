@@ -13,6 +13,7 @@ function CreatePost(props) {
             const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("goSocialToken") })
             // redirect to new post url
             props.history.push(`/post/${response.data}`)
+            props.addFlashMessage("New post created")
         } catch (e) {
             console.log(e.response.data)
         }

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import Page from "./Page"
 import Axios from "axios"
 import { withRouter } from "react-router-dom"
 
+import ExampleContent from "../ExampleContext"
+
 function CreatePost(props) {
     const [title, setTitle] = useState()
     const [body, setBody] = useState()
+    const { addFlashMessage } = useContext(ExampleContent)
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -13,7 +16,7 @@ function CreatePost(props) {
             const response = await Axios.post("/create-post", { title, body, token: localStorage.getItem("goSocialToken") })
             // redirect to new post url
             props.history.push(`/post/${response.data}`)
-            props.addFlashMessage("New post created")
+            addFlashMessage("New post created.")
         } catch (e) {
             console.log(e.response.data)
         }

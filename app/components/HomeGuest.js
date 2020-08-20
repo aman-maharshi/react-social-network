@@ -6,7 +6,7 @@ function HomeGuest() {
     const [username, setUsername] = useState()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
-    
+
     async function handleSubmit(e) {
         e.preventDefault()
         try {
@@ -44,7 +44,7 @@ function HomeGuest() {
                             <input onChange={e => setPassword(e.target.value)} id="password-register" name="password" className="form-control" type="password" placeholder="Create a password" />
                         </div>
                         <button type="submit" className="py-3 mt-4 btn btn-lg btn-success btn-block">
-                            Sign up for ComplexApp
+                            Sign up for goSocial
                         </button>
                     </form>
                 </div>

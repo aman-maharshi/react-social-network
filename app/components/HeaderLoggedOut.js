@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react"
 import Axios from "axios"
-import ExampleContext from "../ExampleContext"
+import DispatchContext from "../DispatchContext"
 
 function HeaderLoggedOut(props) {
-    const { setLoggedIn } = useContext(ExampleContext)
+    const appDispatch = useContext(DispatchContext)
 
     const [username, setUsername] = useState()
     const [password, setPassword] = useState()
@@ -17,7 +17,7 @@ function HeaderLoggedOut(props) {
                 localStorage.setItem("goSocialToken", result.data.token)
                 localStorage.setItem("goSocialUsername", result.data.username)
                 localStorage.setItem("goSocialAvatar", result.data.avatar)
-                setLoggedIn(true)
+                appDispatch({ type: "login" })
             } else {
                 console.log("Incorrect Username / Password")
             }

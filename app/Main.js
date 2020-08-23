@@ -1,8 +1,9 @@
-import React, { useState, useReducer } from "react"
+import React, { useState, useEffect, useReducer } from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter, Switch, Route } from "react-router-dom"
 import Axios from "axios"
 Axios.defaults.baseURL = "http://localhost:8080"
+import { useImmerReducer } from "use-immer"
 
 // Components
 import Header from "./components/Header"
@@ -21,21 +22,42 @@ import DispatchContext from "./DispatchContext"
 function Main() {
     const initialState = {
         loggedIn: Boolean(localStorage.getItem("goSocialToken")),
-        flashMessages: []
-    }
-
-    function ourReducer(state, action) {
-        switch (action.type) {
-            case "login":
-                return { loggedIn: true, flashMessages: state.flashMessages }
-            case "logout":
-                return { loggedIn: false, flashMessages: state.flashMessages }
-            case "flashMessage":
-                return { loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value) }
+        flashMessages: [],
+        user: {
+            token: localStorage.getItem("goSocialToken"),
+            username: localStorage.getItem("goSocialUsername"),
+            avatar: localStorage.getItem("goSocialAvatar")
         }
     }
 
-    const [state, dispatch] = useReducer(ourReducer, initialState)
+    function ourReducer(draft, action) {
+        switch (action.type) {
+            case "login":
+                draft.loggedIn = true
+                draft.user = action.data
+                break
+            case "logout":
+                draft.loggedIn = false
+                break
+            case "flashMessage":
+                draft.flashMessages.push(action.value)
+                break
+        }
+    }
+
+    const [state, dispatch] = useImmerReducer(ourReducer, initialState)
+
+    useEffect(() => {
+        if (state.loggedIn) {
+            localStorage.setItem("goSocialToken", state.user.token)
+            localStorage.setItem("goSocialUsername", state.user.username)
+            localStorage.setItem("goSocialAvatar", state.user.avatar)
+        } else {
+            localStorage.removeItem("goSocialToken")
+            localStorage.removeItem("goSocialUsername")
+            localStorage.removeItem("goSocialAvatar")
+        }
+    }, [state.loggedIn])
 
     return (
         <StateContext.Provider value={state}>

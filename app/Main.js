@@ -15,6 +15,7 @@ import Home from "./components/Home"
 import CreatePost from "./components/CreatePost"
 import ViewSinglePost from "./components/ViewSinglePost"
 import FlashMessages from "./components/FlashMessages"
+import Profile from "./components/Profile"
 
 import StateContext from "./StateContext"
 import DispatchContext from "./DispatchContext"
@@ -64,7 +65,6 @@ function Main() {
             <DispatchContext.Provider value={dispatch}>
                 <BrowserRouter>
                     <FlashMessages messages={state.flashMessages} />
-
                     <Header />
 
                     <Switch>
@@ -76,6 +76,9 @@ function Main() {
                         </Route>
                         <Route path="/create-post">
                             <CreatePost />
+                        </Route>
+                        <Route path="/profile/:username">
+                            <Profile />
                         </Route>
                         <Route path="/post/:id">
                             <ViewSinglePost />

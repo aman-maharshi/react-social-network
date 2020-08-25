@@ -4,6 +4,8 @@ import StateContext from "../StateContext"
 import { useParams } from "react-router-dom"
 import Axios from "axios"
 
+import ProfilePosts from "./ProfilePosts"
+
 function Profile() {
     const appState = useContext(StateContext)
     const { username } = useParams()
@@ -51,20 +53,7 @@ function Profile() {
                 </a>
             </div>
 
-            <div className="list-group">
-                <a href="#" className="list-group-item list-group-item-action">
-                    <img className="avatar-tiny" src={appState.user.avatar} /> <strong>Example Post #1</strong>
-                    <span className="text-muted small">on 2/10/2020 </span>
-                </a>
-                <a href="#" className="list-group-item list-group-item-action">
-                    <img className="avatar-tiny" src={appState.user.avatar} /> <strong>Example Post #2</strong>
-                    <span className="text-muted small">on 2/10/2020 </span>
-                </a>
-                <a href="#" className="list-group-item list-group-item-action">
-                    <img className="avatar-tiny" src={appState.user.avatar} /> <strong>Example Post #3</strong>
-                    <span className="text-muted small">on 2/10/2020 </span>
-                </a>
-            </div>
+            <ProfilePosts />
         </Page>
     )
 }

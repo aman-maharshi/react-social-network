@@ -3,6 +3,8 @@ import Page from "./Page"
 import Axios from "axios"
 import { useParams, Link } from "react-router-dom"
 
+import LoadingDotsIcon from "./LoadingDotsIcon"
+
 function ViewSinglePost() {
     const [isLoading, setIsLoading] = useState(true)
     const [post, setPost] = useState()
@@ -23,7 +25,11 @@ function ViewSinglePost() {
     }, [])
 
     if (isLoading) {
-        return <Page title="...">Loading...</Page>
+        return (
+            <Page title="...">
+                <LoadingDotsIcon />
+            </Page>
+        )
     }
 
     const date = new Date(post.createdDate)

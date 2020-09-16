@@ -2,12 +2,13 @@ import React, { useEffect, useState, useContext } from "react"
 import { useImmerReducer } from "use-immer"
 import Page from "./Page"
 import Axios from "axios"
-import { useParams, Link } from "react-router-dom"
+import { useParams, Link, withRouter } from "react-router-dom"
 import StateContext from "../StateContext"
 import DispatchContext from "../DispatchContext"
 import LoadingDotsIcon from "./LoadingDotsIcon"
+import NotFound from "./NotFound"
 
-function ViewSinglePost() {
+function EditPost(props) {
     const appState = useContext(StateContext)
     const appDispatch = useContext(DispatchContext)
     const originalState = {
@@ -24,7 +25,8 @@ function ViewSinglePost() {
         isFetching: true,
         isSaving: false,
         id: useParams().id,
-        sendCount: 0
+        sendCount: 0,
+        notFound: false
     }
     function ourReducer(draft, action) {
         switch (action.type) {
@@ -64,6 +66,9 @@ function ViewSinglePost() {
                     draft.body.message = "You must provide a Body Content"
                 }
                 return
+            case "notFound":
+                draft.notFound = true
+                return
         }
     }
 
@@ -83,7 +88,16 @@ function ViewSinglePost() {
             try {
                 const response = await Axios.get(`/post/${state.id}`, { cancelToken: ourRequest.token })
                 //console.log(response.data)
-                dispatch({ type: "fetchComplete", value: response.data })
+                if (response.data) {
+                    dispatch({ type: "fetchComplete", value: response.data })
+                    if (appState.user.username != response.data.author.username) {
+                        appDispatch({ type: "flashMessage", value: "You do not have permission to edit this post" })
+                        // redirect to homepage
+                        props.history.push("/")
+                    }
+                } else {
+                    dispatch({ type: "notFound" })
+                }
             } catch (e) {
                 console.log(e.response.data)
             }
@@ -117,6 +131,10 @@ function ViewSinglePost() {
         }
     }, [state.sendCount])
 
+    if (state.notFound) {
+        return <NotFound />
+    }
+
     if (state.isFetching) {
         return (
             <Page title="...">
@@ -127,7 +145,10 @@ function ViewSinglePost() {
 
     return (
         <Page title="Edit Post">
-            <form onSubmit={handleSubmit}>
+            <Link className="small font-weight-bold" to={`/post/${state.id}`}>
+                &laquo; Back to post
+            </Link>
+            <form className="mt-3" onSubmit={handleSubmit}>
                 <div className="form-group">
                     <label htmlFor="post-title" className="text-muted mb-1">
                         <small>Title</small>
@@ -152,4 +173,4 @@ function ViewSinglePost() {
     )
 }
 
-export default ViewSinglePost
+export default withRouter(EditPost)

@@ -4,6 +4,7 @@ import Axios from "axios"
 import { useParams, Link } from "react-router-dom"
 import ReactMarkdown from "react-markdown"
 import ReactTooltip from "react-tooltip"
+import NotFound from "./NotFound"
 
 import LoadingDotsIcon from "./LoadingDotsIcon"
 
@@ -38,6 +39,10 @@ function ViewSinglePost() {
                 <LoadingDotsIcon />
             </Page>
         )
+    }
+
+    if (!isLoading && !post) {
+        return <NotFound />
     }
 
     const date = new Date(post.createdDate)

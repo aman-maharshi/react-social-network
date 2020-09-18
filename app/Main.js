@@ -18,6 +18,7 @@ import FlashMessages from "./components/FlashMessages"
 import Profile from "./components/Profile"
 import EditPost from "./components/EditPost"
 import NotFound from "./components/NotFound"
+import Search from "./components/Search"
 
 import StateContext from "./StateContext"
 import DispatchContext from "./DispatchContext"
@@ -30,7 +31,8 @@ function Main() {
             token: localStorage.getItem("goSocialToken"),
             username: localStorage.getItem("goSocialUsername"),
             avatar: localStorage.getItem("goSocialAvatar")
-        }
+        },
+        isSearchOpen: false
     }
 
     function ourReducer(draft, action) {
@@ -38,13 +40,19 @@ function Main() {
             case "login":
                 draft.loggedIn = true
                 draft.user = action.data
-                break
+                return
             case "logout":
                 draft.loggedIn = false
-                break
+                return
             case "flashMessage":
                 draft.flashMessages.push(action.value)
-                break
+                return
+            case "openSearch":
+                draft.isSearchOpen = true
+                return
+            case "closeSearch":
+                draft.isSearchOpen = false
+                return
         }
     }
 
@@ -95,7 +103,7 @@ function Main() {
                             <NotFound />
                         </Route>
                     </Switch>
-
+                    {state.isSearchOpen ? <Search /> : ""}
                     <Footer />
                 </BrowserRouter>
             </DispatchContext.Provider>

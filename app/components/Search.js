@@ -1,8 +1,16 @@
 import React, { useEffect, useContext } from "react"
 import DispatchContext from "../DispatchContext"
+import { useImmer } from "use-immer"
 
 function Search() {
     const appDispatch = useContext(DispatchContext)
+
+    const [state, setState] = useImmer({
+        searchTerm: "",
+        results: [],
+        show: "neither",
+        requestCount: 0
+    })
 
     function handleCloseIcon() {
         appDispatch({ type: "closeSearch" })
@@ -22,6 +30,30 @@ function Search() {
         }
     }
 
+    function handleInput(e) {
+        const value = e.target.value
+        setState(draft => {
+            draft.searchTerm = value
+        })
+    }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            //console.log(state.searchTerm)
+            setState(draft => {
+                draft.requestCount++
+            })
+        }, 2000)
+
+        return () => clearTimeout(timer)
+    }, [state.searchTerm])
+
+    useEffect(() => {
+        if (sate.requestCount) {
+            // send axios request here
+        }
+    }, [state.requestCount])
+
     return (
         <div className="search-overlay">
             <div className="search-overlay-top shadow-sm">
@@ -29,7 +61,7 @@ function Search() {
                     <label htmlFor="live-search-field" className="search-overlay-icon">
                         <i className="fas fa-search"></i>
                     </label>
-                    <input autoFocus type="text" autoComplete="off" id="live-search-field" className="live-search-field" placeholder="What are you interested in?" />
+                    <input onChange={handleInput} autoFocus type="text" autoComplete="off" id="live-search-field" className="live-search-field" placeholder="What are you interested in?" />
                     <span onClick={handleCloseIcon} className="close-live-search">
                         <i className="fas fa-times-circle"></i>
                     </span>
